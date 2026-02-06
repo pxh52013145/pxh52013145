@@ -6,46 +6,45 @@
 
 ---
 
-### 🛠 技术栈一览
+### 🛠 技术栈
 
 [![My Skills](https://skillicons.dev/icons?i=rust,qt,cpp,linux,windows,git,mysql,vscode,github,nodejs,react,tailwind)](https://skillicons.dev)
 
 ---
 
-### 🚀 我的项目与探索
+### 🚀 核心项目进度
 
-<details>
-  <summary>展开查看更多项目</summary>
-
-  <br>
-
-  | 项目名称 | 核心技术 | 状态 |
-  | :--- | :--- | :--- |
-  | **Social Music Player** | Rust / Audio DSP | 进行中 🚧 |
-  | **Custom Browser** | C++ / Qt / CEF | 进行中 🚧 |
-  | **Asset Manager** | Rust / Tauri | 规划中 💡 |
-  | **Numerical Tool** | Blueprints / Editor | 进行中 🚧 |
-
-</details>
+| 项目 | 技术 | 状态 |
+| :--- | :--- | :--- |
+| **Social Music Player** | Rust / DSP | 🚧 开发中 |
+| **Custom Browser** | C++ / Qt / CEF | 🚧 架构设计 |
+| **Asset Manager** | Rust / Tauri | 💡 规划中 |
 
 ---
 
-### 📈 GitHub 活动与贡献
+### 📈 数据可视化统计
 
-<a href="https://git.io/streak-stats">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=pxh52013145&theme=tokyonight&hide_border=true&date_format=M%20j%5B%2C%20Y%5D" alt="GitHub Streak" />
-</a>
+<div align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=pxh52013145&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
+</div>
 
-<img src="https://github-readme-stats.vercel.app/api?username=pxh52013145&show_icons=true&theme=tokyonight&rank_icon=github" alt="GitHub Stats" />
+<br />
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=pxh52013145&layout=compact&theme=tokyonight" alt="Top Languages" />
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=pxh52013145&show_icons=true&theme=tokyonight&rank_icon=github" alt="GitHub Stats" />
+</div>
+
+<br />
+
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=pxh52013145&layout=compact&theme=tokyonight" alt="Top Languages" />
+</div>
 
 ---
 
-### 🤝 联系我
+### 📬 保持联系
 
 [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:你的邮箱)
-[![Blog](https://img.shields.io/badge/Personal_Cloud-0052D9?style=for-the-badge&logo=tencent-cloud&logoColor=white)](你的云服务器地址)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pxh52013145)
+[![Tencent Cloud](https://img.shields.io/badge/Server-0052D9?style=for-the-badge&logo=tencent-cloud&logoColor=white)](你的云服务器地址)
 
 </div>
