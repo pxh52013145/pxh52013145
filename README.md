@@ -8,8 +8,7 @@
 
 <p align="center">
     <img width="400" src="https://github-readme-stats.vercel.app/api?username=pxh52013145&theme=transparent&show_icons=true&hide_border=true&show=reviews,discussions_started&hide_title=true&hide=contribs&number_format=long&include_all_commits=true" alt="Profile Stats" title="Profile Stats" />
-    
-    <img width="400" src="https://streak-stats.demolab.com?user=pxh52013145&theme=transparent&hide_border=true" alt="Streak Stats" title="Streak Stats" />
+
 </p>
 
 <p align="center">
@@ -27,10 +26,6 @@
 <p align="center">
     <a href="https://github.com/pxh52013145"><img src="https://img.shields.io/badge/GitHub-pxh52013145-blue?logo=github" alt="GitHub" title="GitHub" /></a>
     
-    <a href="mailto:你的邮箱@gmail.com"><img src="https://img.shields.io/badge/Gmail-Email_Me-D14836?logo=gmail&logoColor=white" alt="Gmail" title="Gmail" /></a>
-    <a href="#"><img src="https://img.shields.io/badge/Tencent_Cloud-Server-0052D9?logo=tencent-cloud&logoColor=white" alt="Server" title="Server" /></a>
-    
-    <a href="https://github.com/pxh52013145"><img src="https://komarev.com/ghpvc/?username=pxh52013145&label=Profile+Views" alt="Profile Views" title="Profile Views" /></a>
 </p>
 
 <p align="center">
