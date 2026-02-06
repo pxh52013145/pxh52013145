@@ -1,50 +1,38 @@
-<div align="center">
+<p align="center">
+    <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=300&&section=header&text=HI%20THERE&fontSize=90&fontAlign=50&fontAlignY=30&desc=I%20am%20pxh52013145&descAlign=50&descSize=30&descAlignY=60&animation=twinkling" alt="Hi There" title="Hi There"/>
+</p>
 
-# 👋 你好，我是 pxh52013145
+<p align="center">
+    <img width="800" src="https://readme-typing-svg.demolab.com?font=Microsoft+YaHei&size=20&pause=1000&center=true&vCenter=true&random=false&width=600&lines=Welcome+to+my+GitHub+profile+page;%e6%ac%a2%e8%bf%8e%e6%9d%a5%e5%88%b0%e6%88%91%e7%9a%84+GitHub+%e4%b8%bb%e9%a1%b5;Rust+%26+C%2B%2B+Developer;Building+Digital+Tools+for+Future" alt="Hello World" title="Hello World"/>
+</p>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=A9FE72&center=true&vCenter=true&width=435&lines=Software+Architecture+Explorer;Rust+%26+C%2B%2B+Developer;Building+Digital+Tools+for+Future" alt="Typing SVG" />
+<p align="center">
+    <img width="400" src="https://github-readme-stats.vercel.app/api?username=pxh52013145&theme=transparent&show_icons=true&hide_border=true&show=reviews,discussions_started&hide_title=true&hide=contribs&number_format=long&include_all_commits=true" alt="Profile Stats" title="Profile Stats" />
+    
+    <img width="400" src="https://streak-stats.demolab.com?user=pxh52013145&theme=transparent&hide_border=true" alt="Streak Stats" title="Streak Stats" />
+</p>
 
----
+<p align="center">
+    <img width="800" src="https://github-readme-activity-graph.vercel.app/graph?username=pxh52013145&theme=github-compact&hide_border=true&area=true&custom_title=Activity%20Graph" alt="Activity Graph" title="Activity Graph" />
+</p>
 
-### 🛠 技术栈
+<p align="center">
+    <img width="800" src="https://github-profile-trophy.vercel.app/?username=pxh52013145&no-bg=true&no-frame=true&theme=algolia&title=-MultiLanguage" alt="Profile Trophy" title="Profile Trophy" />
+</p>
 
-[![My Skills](https://skillicons.dev/icons?i=rust,qt,cpp,linux,windows,git,mysql,vscode,github,nodejs,react,tailwind)](https://skillicons.dev)
+<p align="center">
+    <img width="800" src="https://go-skill-icons.vercel.app/api/icons?i=rust,qt,cpp,linux,windows,git,mysql,vscode,github,nodejs,react,tailwind&titles=true" alt="Skill Icons" title="Skill Icons">
+</p>
 
----
+<p align="center">
+    <a href="https://github.com/pxh52013145"><img src="https://img.shields.io/badge/GitHub-pxh52013145-blue?logo=github" alt="GitHub" title="GitHub" /></a>
+    
+    <a href="mailto:你的邮箱@gmail.com"><img src="https://img.shields.io/badge/Gmail-Email_Me-D14836?logo=gmail&logoColor=white" alt="Gmail" title="Gmail" /></a>
+    <a href="#"><img src="https://img.shields.io/badge/Tencent_Cloud-Server-0052D9?logo=tencent-cloud&logoColor=white" alt="Server" title="Server" /></a>
+    
+    <a href="https://github.com/pxh52013145"><img src="https://komarev.com/ghpvc/?username=pxh52013145&label=Profile+Views" alt="Profile Views" title="Profile Views" /></a>
+</p>
 
-### 🚀 核心项目进度
-
-| 项目 | 技术 | 状态 |
-| :--- | :--- | :--- |
-| **Social Music Player** | Rust / DSP | 🚧 开发中 |
-| **Custom Browser** | C++ / Qt / CEF | 🚧 架构设计 |
-| **Asset Manager** | Rust / Tauri | 💡 规划中 |
-
----
-
-### 📈 数据可视化统计
-
-<div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=pxh52013145&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
-</div>
-
-<br />
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=pxh52013145&show_icons=true&theme=tokyonight&rank_icon=github" alt="GitHub Stats" />
-</div>
-
-<br />
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=pxh52013145&layout=compact&theme=tokyonight" alt="Top Languages" />
-</div>
-
----
-
-### 📬 保持联系
-
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:你的邮箱)
-[![Tencent Cloud](https://img.shields.io/badge/Server-0052D9?style=for-the-badge&logo=tencent-cloud&logoColor=white)](你的云服务器地址)
-
-</div>
+<p align="center">
+    <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=300&&section=footer&text=THE%20END&fontSize=90&fontAlign=50&fontAlignY=70&desc=Keep%20it%20simple,%20stupid&descAlign=50&descSize=30&descAlignY=40&animation=twinkling" alt="The End" title="The End"/>
+</p>
