@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-    <img width="800" src="https://github-readme-activity-graph.vercel.app/graph?username=pxh52013145&theme=github-compact&hide_border=true&area=true&custom_title=Activity%20Graph" alt="Activity Graph" title="Activity Graph" />
+  <img width="800" src="https://github-readme-stats.vercel.app/api?username=pxh52013145&show_icons=true&theme=transparent&hide_border=true&count_private=true" alt="Stats" />
 </p>
 
 <p align="center">
