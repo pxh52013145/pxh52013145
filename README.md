@@ -18,11 +18,7 @@
 <p align="center">
     <img width="800" src="https://github-profile-trophy.vercel.app/?username=pxh52013145&no-bg=true&no-frame=true&theme=algolia&title=-MultiLanguage" alt="Profile Trophy" title="Profile Trophy" />
 </p>
-
-<p align="center">
-    <img width="800" src="https://go-skill-icons.vercel.app/api/icons?i=rust,qt,cpp,linux,windows,git,mysql,vscode,github,nodejs,react,tailwind&titles=true" alt="Skill Icons" title="Skill Icons">
-</p>
-
+https://github-profile-trophy.vercel.app/?username=pxh52013145&no-bg=true&no-frame=true&theme=algolia&title=-MultiLanguage
 <p align="center">
     <a href="https://github.com/pxh52013145"><img src="https://img.shields.io/badge/GitHub-pxh52013145-blue?logo=github" alt="GitHub" title="GitHub" /></a>
     
