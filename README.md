@@ -7,25 +7,13 @@
 </p>
 
 <p align="center">
-    <img width="400" src="https://github-readme-stats.vercel.app/api?username=pxh52013145&theme=transparent&show_icons=true&hide_border=true&show=reviews,discussions_started&hide_title=true&hide=contribs&number_format=long&include_all_commits=true" alt="Profile Stats" title="Profile Stats" />
-
-</p>
-
-<p align="center">
     <img width="800" src="https://github-readme-activity-graph.vercel.app/graph?username=pxh52013145&theme=github-compact&hide_border=true&area=true&custom_title=Activity%20Graph" alt="Activity Graph" title="Activity Graph" />
 </p>
 
 <p align="center">
-    <img width="800" src="https://github-profile-trophy.vercel.app/?username=pxh52013145&no-bg=true&no-frame=true&theme=algolia&title=-MultiLanguage" alt="Profile Trophy" title="Profile Trophy" />
-</p>
-
-<p align="center">
-    <img width="800" src="https://go-skill-icons.vercel.app/api/icons?i=rust,qt,cpp,linux,windows,git,mysql,vscode,github,nodejs,react,tailwind&titles=true" alt="Skill Icons" title="Skill Icons">
-</p>
-
-<p align="center">
-    <a href="https://github.com/pxh52013145"><img src="https://img.shields.io/badge/GitHub-pxh52013145-blue?logo=github" alt="GitHub" title="GitHub" /></a>
-    
+  <a href="https://github.com/pxh52013145"><img src="https://img.shields.io/badge/GitHub-pxh52013145-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" title="GitHub" /></a>
+  <img src="https://komarev.com/ghpvc/?username=pxh52013145&label=Profile%20Views&color=0e75b6&style=for-the-badge" alt="Profile views" title="Profile views" />
+  <img src="https://img.shields.io/github/followers/pxh52013145?style=for-the-badge&logo=github&label=Followers&color=blue" alt="GitHub followers" title="GitHub followers" />
 </p>
 
 <p align="center">
