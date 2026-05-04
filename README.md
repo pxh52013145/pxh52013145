@@ -7,6 +7,10 @@
 </p>
 
 <p align="center">
+    <img width="800" src="./assets/dot-matrix.svg" alt="Daily dot matrix quote" title="Daily dot matrix quote"/>
+</p>
+
+<p align="center">
     <img width="800" src="https://github-readme-activity-graph.vercel.app/graph?username=pxh52013145&theme=github-compact&hide_border=true&area=true&custom_title=Activity%20Graph" alt="Activity Graph" title="Activity Graph" />
 </p>
 
