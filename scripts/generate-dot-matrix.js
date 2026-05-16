@@ -7,6 +7,19 @@ const QUOTE_HISTORY_PATH = path.join(__dirname, "quote-history.json");
 const QUOTE_API_URL = process.env.QUOTE_API_URL || "https://zenquotes.io/api/quotes/";
 const QUOTE_API_ATTEMPTS = Number.parseInt(process.env.QUOTE_API_ATTEMPTS || "3", 10);
 const QUOTE_MAX_LENGTH = Number.parseInt(process.env.QUOTE_MAX_LENGTH || "86", 10);
+const ICONIFY_SEARCH_URL = process.env.ICONIFY_SEARCH_URL || "https://api.iconify.design/search";
+const ICONIFY_PREFIXES = (process.env.ICONIFY_PREFIXES || "fluent-emoji-flat,noto")
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
+const ICON_SEARCH_TERMS = [
+  "apple", "avocado", "banana", "berry", "book", "camera", "candy", "cherry", "clock", "coffee",
+  "compass", "cookie", "crown", "crystal", "diamond", "dice", "donut", "flower", "gem", "gift",
+  "grape", "heart", "key", "kiwi", "lamp", "leaf", "lemon", "magnet", "medal", "moon",
+  "orange", "palette", "peach", "pear", "pizza", "plant", "rocket", "rose", "star", "sun",
+  "telescope", "ticket", "tool", "trophy", "umbrella", "watermelon"
+];
+const ICON_SAMPLE_SIZE = Number.parseInt(process.env.ICON_SAMPLE_SIZE || "56", 10);
 const CLOCK_OUTPUT_PATH = path.join(ROOT, "assets", "dot-matrix.svg");
 const CACHE_OUTPUT_PATH = path.join(ROOT, "assets", "signal-cache.svg");
 const README_PATH = path.join(ROOT, "README.md");
@@ -626,6 +639,147 @@ function weightedPick(rng, values) {
   return values[values.length - 1];
 }
 
+function iconSlug(value) {
+  return String(value || "")
+    .split(":")
+    .pop()
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+async function fetchJson(url) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "pxh52013145-profile-readme-action"
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`${url} returned ${response.status}`);
+  }
+
+  return response.json();
+}
+
+async function fetchText(url) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: "image/svg+xml,text/plain",
+      "User-Agent": "pxh52013145-profile-readme-action"
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`${url} returned ${response.status}`);
+  }
+
+  return response.text();
+}
+
+async function pickIconifyIcon(rng) {
+  const terms = [...ICON_SEARCH_TERMS];
+  const attempts = Math.min(8, terms.length);
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const termIndex = Math.floor(rng() * terms.length);
+    const [term] = terms.splice(termIndex, 1);
+    const params = new URLSearchParams({
+      limit: "64",
+      prefixes: ICONIFY_PREFIXES.join(","),
+      query: term
+    });
+    const payload = await fetchJson(`${ICONIFY_SEARCH_URL}?${params.toString()}`);
+    const icons = Array.isArray(payload.icons) ? payload.icons : [];
+    if (icons.length === 0) continue;
+
+    const id = pick(rng, icons);
+    const [prefix, name] = id.split(":");
+    if (!prefix || !name) continue;
+
+    return {
+      id,
+      name: iconSlug(name),
+      source: "Iconify",
+      svg: await fetchText(`https://api.iconify.design/${prefix}/${name}.svg`)
+    };
+  }
+
+  throw new Error("Iconify search returned no usable icons");
+}
+
+async function iconifyPatternFromSvg(svg) {
+  const sharp = require("sharp");
+  const { data, info } = await sharp(Buffer.from(svg))
+    .resize(ICON_SAMPLE_SIZE, ICON_SAMPLE_SIZE, {
+      background: { alpha: 0, b: 0, g: 0, r: 0 },
+      fit: "contain"
+    })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const dots = [];
+  const step = 4;
+
+  for (let y = 0; y < info.height; y += step) {
+    for (let x = 0; x < info.width; x += step) {
+      let alphaTotal = 0;
+      let redTotal = 0;
+      let greenTotal = 0;
+      let blueTotal = 0;
+      let samples = 0;
+
+      for (let yy = y; yy < Math.min(y + step, info.height); yy += 1) {
+        for (let xx = x; xx < Math.min(x + step, info.width); xx += 1) {
+          const index = (yy * info.width + xx) * info.channels;
+          const alpha = data[index + 3];
+          alphaTotal += alpha;
+          redTotal += data[index] * alpha;
+          greenTotal += data[index + 1] * alpha;
+          blueTotal += data[index + 2] * alpha;
+          samples += 1;
+        }
+      }
+
+      const alpha = alphaTotal / samples;
+      if (alpha < 32) continue;
+
+      const weight = alphaTotal || 1;
+      dots.push({
+        color: `#${Math.round(redTotal / weight).toString(16).padStart(2, "0")}${Math.round(greenTotal / weight).toString(16).padStart(2, "0")}${Math.round(blueTotal / weight).toString(16).padStart(2, "0")}`,
+        x: x / step,
+        y: y / step
+      });
+    }
+  }
+
+  return {
+    dots,
+    height: Math.ceil(info.height / step),
+    width: Math.ceil(info.width / step)
+  };
+}
+
+async function buildPixelDrop(rng) {
+  try {
+    const icon = await pickIconifyIcon(rng);
+    const pattern = await iconifyPatternFromSvg(icon.svg);
+    if (pattern.dots.length > 0) {
+      return {
+        icon: icon.id,
+        isDynamic: true,
+        name: icon.name,
+        pattern,
+        source: icon.source
+      };
+    }
+  } catch (error) {
+    console.warn(`Iconify pixel drop fallback: ${error.message}`);
+  }
+
+  return null;
+}
+
 async function buildSignal() {
   const { year, month, day, weekday } = getShanghaiDateParts();
   const dateLine = `${year} / ${month} / ${day}`;
@@ -633,7 +787,8 @@ async function buildSignal() {
   const rng = makeRng(hashString(dateKey));
   const quote = await quoteForDate(year, month, day, dateKey);
   const rarity = weightedPick(rng, RARITIES);
-  const treasure = pick(rng, TREASURES[rarity.label]);
+  const pixelDrop = await buildPixelDrop(rng);
+  const treasure = pixelDrop || pick(rng, TREASURES[rarity.label]);
 
   return {
     dateKey,
@@ -708,11 +863,30 @@ function drawIcon(patternName, x, y, cell, rarityColor) {
   };
 }
 
+function drawSampledIcon(pattern, x, y, cell) {
+  const dotRadius = cell * 0.34;
+  const dots = pattern.dots.map((dot) => {
+    const cx = (x + dot.x * cell + cell / 2).toFixed(2);
+    const cy = (y + dot.y * cell + cell / 2).toFixed(2);
+    return `<circle cx="${cx}" cy="${cy}" r="${dotRadius.toFixed(2)}" fill="${dot.color}"/>`;
+  });
+
+  return {
+    height: pattern.height * cell,
+    svg: dots.join("\n"),
+    width: pattern.width * cell
+  };
+}
+
 function renderSignalCacheCard(signal) {
-  const icon = drawIcon(signal.treasure.icon, 0, 0, 12, signal.rarity.color);
-  const iconX = 320 + (160 - icon.width) / 2;
-  const iconY = 72 + (156 - icon.height) / 2;
-  const centeredIcon = drawIcon(signal.treasure.icon, iconX, iconY, 12, signal.rarity.color);
+  const preview = signal.treasure.isDynamic
+    ? drawSampledIcon(signal.treasure.pattern, 0, 0, 10)
+    : drawIcon(signal.treasure.icon, 0, 0, 12, signal.rarity.color);
+  const iconX = 304 + (192 - preview.width) / 2;
+  const iconY = 56 + (188 - preview.height) / 2;
+  const centeredIcon = signal.treasure.isDynamic
+    ? drawSampledIcon(signal.treasure.pattern, iconX, iconY, 10)
+    : drawIcon(signal.treasure.icon, iconX, iconY, 12, signal.rarity.color);
 
   return `<svg width="800" height="280" viewBox="0 0 800 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
 <title id="title">Daily pixel drop</title>

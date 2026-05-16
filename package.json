@@ -1,0 +1,22 @@
+{
+  "name": "pxh52013145",
+  "version": "1.0.0",
+  "description": "Profile README daily card generator",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate-dot-matrix.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pxh52013145/pxh52013145.git"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pxh52013145/pxh52013145/issues"
+  },
+  "homepage": "https://github.com/pxh52013145/pxh52013145#readme",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}

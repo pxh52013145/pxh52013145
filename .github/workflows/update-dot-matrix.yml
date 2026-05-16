@@ -19,20 +19,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Generate daily cards
-        run: node scripts/generate-dot-matrix.js
+        run: npm run generate
 
       - name: Commit daily cards
         shell: bash
         run: |
-          if [[ -z "$(git status --porcelain assets/dot-matrix.svg assets/signal-cache.svg README.md scripts/quote-history.json)" ]]; then
+          if [[ -z "$(git status --porcelain assets/dot-matrix.svg assets/signal-cache.svg README.md scripts/quote-history.json package.json package-lock.json)" ]]; then
             echo "No profile daily card changes."
             exit 0
           fi
 
           git config user.name "pxh52013145"
           git config user.email "145483973+pxh52013145@users.noreply.github.com"
-          git add assets/dot-matrix.svg assets/signal-cache.svg README.md scripts/quote-history.json
+          git add assets/dot-matrix.svg assets/signal-cache.svg README.md scripts/quote-history.json package.json package-lock.json
           git commit -m "chore: update profile daily cards"
           git push
