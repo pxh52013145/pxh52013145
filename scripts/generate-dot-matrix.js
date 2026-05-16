@@ -634,12 +634,10 @@ async function buildSignal() {
   const quote = await quoteForDate(year, month, day, dateKey);
   const rarity = weightedPick(rng, RARITIES);
   const treasure = pick(rng, TREASURES[rarity.label]);
-  const dropId = hashString(`${dateKey}-${rarity.label}-${treasure.name}`).toString(16).toUpperCase().padStart(8, "0").slice(0, 6);
 
   return {
     dateKey,
     dateLine,
-    dropId,
     quote: quote.text,
     quoteAuthor: quote.author,
     quoteSource: quote.source,
@@ -711,30 +709,20 @@ function drawIcon(patternName, x, y, cell, rarityColor) {
 }
 
 function renderSignalCacheCard(signal) {
-  const small = { cell: 3.5, radius: 1.16, charGap: 3.5, fill: "#8fa7bf", opacity: 0.84 };
-  const labelStyle = { cell: 3.8, radius: 1.25, charGap: 3.8, fill: signal.rarity.color, opacity: 0.95 };
   const icon = drawIcon(signal.treasure.icon, 0, 0, 12, signal.rarity.color);
-  const iconX = 86 + (190 - icon.width) / 2;
-  const iconY = 82 + (170 - icon.height) / 2;
+  const iconX = 320 + (160 - icon.width) / 2;
+  const iconY = 72 + (156 - icon.height) / 2;
   const centeredIcon = drawIcon(signal.treasure.icon, iconX, iconY, 12, signal.rarity.color);
 
-  return `<svg width="800" height="300" viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  return `<svg width="800" height="280" viewBox="0 0 800 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
 <title id="title">Daily pixel drop</title>
 <desc id="desc">${escapeXml(`${signal.dateLine}. ${signal.rarity.label} drop ${signal.treasure.name}.`)}</desc>
-<rect width="800" height="300" rx="8" fill="#0D1117"/>
-<rect x="1" y="1" width="798" height="298" rx="7" stroke="#243246"/>
-<rect x="18" y="18" width="764" height="264" rx="5" fill="url(#dotgrid)" opacity="0.58"/>
-<path d="M52 46H32V66M748 46H768V66M52 254H32V234M748 254H768V234" stroke="${signal.rarity.color}" stroke-width="1.5" stroke-linecap="square" opacity="0.76"/>
-${drawText("DAILY PIXEL DROP", 58, 42, small)}
-${rightText(signal.dateKey, 742, 42, small)}
-<rect x="58" y="72" width="246" height="196" rx="5" stroke="${signal.rarity.color}" opacity="0.54"/>
+<rect width="800" height="280" rx="8" fill="#0D1117"/>
+<rect x="1" y="1" width="798" height="278" rx="7" stroke="#243246"/>
+<rect x="18" y="18" width="764" height="244" rx="5" fill="url(#dotgrid)" opacity="0.58"/>
+<path d="M52 46H32V66M748 46H768V66M52 234H32V214M748 234H768V214" stroke="${signal.rarity.color}" stroke-width="1.5" stroke-linecap="square" opacity="0.76"/>
+<rect x="304" y="56" width="192" height="188" rx="5" stroke="${signal.rarity.color}" opacity="0.54"/>
 ${centeredIcon.svg}
-${drawText("TODAY", 348, 86, labelStyle)}
-<text x="348" y="126" fill="${signal.rarity.color}" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="28" font-weight="700">${escapeXml(signal.treasure.name)}</text>
-<text x="348" y="158" fill="#edf6ff" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="18" letter-spacing="1">${escapeXml(`${signal.rarity.label} DROP`)}</text>
-<text x="348" y="188" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="15" letter-spacing="0.8">${escapeXml(`ID ${signal.dropId}`)}</text>
-<path d="M348 214H698" stroke="#243246" stroke-width="1"/>
-<text x="348" y="242" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="14" letter-spacing="0.7">A STATIC DAILY EASTER EGG FOR THIS PROFILE</text>
 <defs>
   <pattern id="dotgrid" width="24" height="24" patternUnits="userSpaceOnUse">
     <circle cx="4" cy="4" r="0.85" fill="#58A6FF" opacity="0.22"/>
