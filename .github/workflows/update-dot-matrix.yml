@@ -1,4 +1,4 @@
-name: Update dot matrix card
+name: Update profile matrix cards
 
 on:
   workflow_dispatch:
@@ -20,19 +20,19 @@ jobs:
         with:
           node-version: 22
 
-      - name: Generate card
+      - name: Generate cards
         run: node scripts/generate-dot-matrix.js
 
-      - name: Commit card
+      - name: Commit cards
         shell: bash
         run: |
-          if [[ -z "$(git status --porcelain assets/dot-matrix.svg)" ]]; then
-            echo "No dot matrix changes."
+          if [[ -z "$(git status --porcelain assets/dot-matrix.svg assets/signal-cache.svg README.md scripts/quote-history.json)" ]]; then
+            echo "No profile card changes."
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/dot-matrix.svg
-          git commit -m "chore: update dot matrix card"
+          git config user.name "pxh52013145"
+          git config user.email "145483973+pxh52013145@users.noreply.github.com"
+          git add assets/dot-matrix.svg assets/signal-cache.svg README.md scripts/quote-history.json
+          git commit -m "chore: update profile matrix cards"
           git push
