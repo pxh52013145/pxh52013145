@@ -19,18 +19,20 @@
     <img width="800" src="./assets/signal-cache.svg" alt="Signal Cache terminal easter egg" title="Signal Cache terminal easter egg"/>
 </p>
 
-<details>
-<summary>Signal Cache decode key</summary>
+<details align="center">
+<summary>Reveal Signal Cache</summary>
 
 ```text
 RUN: 20260517
-QUOTE_SOURCE: ZenQuotes
-QUOTE_AUTHOR: Albert Einstein
 MODE: ATBASH
 HINT: MIRROR MAP
+PAYLOAD: ORTSG
 ANSWER: LIGHT
 DROP: Pixel Heart / COMMON
 ICON: HEART
+QUOTE: THE PERSON WHO NEVER MADE A MISTAKE NEVER TRIED ANYTHING NEW.
+QUOTE_AUTHOR: Albert Einstein
+QUOTE_SOURCE: ZenQuotes
 UPDATED: 2026 / 05 / 17 SUNDAY Asia/Shanghai
 ```
 

@@ -342,6 +342,84 @@ function wrapDotText(text, maxWidth, options, maxLines = 2) {
   return lines;
 }
 
+function splitDotWord(word, maxWidth, options) {
+  const chunks = [];
+  let current = "";
+
+  for (const char of word) {
+    const next = `${current}${char}`;
+    if (!current || measure(next, options.cell, options.charGap) <= maxWidth) {
+      current = next;
+      continue;
+    }
+
+    chunks.push(current);
+    current = char;
+  }
+
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+function layoutDotText(text, maxWidth, options, maxLines) {
+  const words = text.toUpperCase().split(/\s+/).filter(Boolean);
+  const lines = [];
+  let current = "";
+
+  for (const word of words) {
+    const parts = measure(word, options.cell, options.charGap) > maxWidth
+      ? splitDotWord(word, maxWidth, options)
+      : [word];
+
+    for (const part of parts) {
+      const next = current ? `${current} ${part}` : part;
+      if (measure(next, options.cell, options.charGap) <= maxWidth) {
+        current = next;
+        continue;
+      }
+
+      if (current) {
+        lines.push(current);
+      }
+
+      current = part;
+      if (lines.length >= maxLines) {
+        return { fits: false, lines: lines.slice(0, maxLines) };
+      }
+    }
+  }
+
+  if (current) lines.push(current);
+  return { fits: lines.length <= maxLines, lines: lines.slice(0, maxLines) };
+}
+
+function fitDotText(text, maxWidth, maxLines, style) {
+  const cells = style.cells || [4.2, 3.8, 3.4, 3.05, 2.75];
+
+  for (const cell of cells) {
+    const options = {
+      cell,
+      charGap: cell,
+      fill: style.fill,
+      opacity: style.opacity,
+      radius: Math.max(0.95, cell * 0.32)
+    };
+    const layout = layoutDotText(text, maxWidth, options, maxLines);
+    if (layout.fits) {
+      return { lines: layout.lines, options };
+    }
+  }
+
+  const options = {
+    cell: cells[cells.length - 1],
+    charGap: cells[cells.length - 1],
+    fill: style.fill,
+    opacity: style.opacity,
+    radius: Math.max(0.95, cells[cells.length - 1] * 0.32)
+  };
+  return { lines: layoutDotText(text, maxWidth, options, maxLines).lines, options };
+}
+
 function wrapPlainText(text, maxLength, maxLines = 2) {
   const tokens = text.split(/\s+/).filter(Boolean);
   const lines = [];
@@ -620,25 +698,33 @@ async function buildSignal() {
 }
 
 function renderClockCard(signal) {
-  const small = { cell: 4, radius: 1.35, charGap: 4, fill: "#8fa7bf", opacity: 0.85 };
-  const dateStyle = { cell: 7, radius: 2.25, charGap: 7, fill: "#edf6ff", opacity: 0.96 };
-  const quoteStyle = { cell: 4.5, radius: 1.45, charGap: 4.5, fill: "#d8f2ff", opacity: 0.92 };
-  const quoteLines = wrapDotText(signal.quote, 680, quoteStyle, 2);
-  const quoteSvg = quoteLines
-    .map((line, index) => centeredText(line, 162 + index * 32, quoteStyle))
+  const small = { cell: 3.8, radius: 1.25, charGap: 3.8, fill: "#8fa7bf", opacity: 0.86 };
+  const dateStyle = { cell: 6.4, radius: 2.05, charGap: 6.4, fill: "#edf6ff", opacity: 0.96 };
+  const quoteFit = fitDotText(signal.quote, 660, 3, {
+    cells: [3.9, 3.55, 3.2, 2.9, 2.65],
+    fill: "#d8f2ff",
+    opacity: 0.92
+  });
+  const quoteStartY = quoteFit.lines.length === 1 ? 194 : quoteFit.lines.length === 2 ? 178 : 164;
+  const quoteStep = Math.max(24, quoteFit.options.cell * 7 + 7);
+  const quoteSvg = quoteFit.lines
+    .map((line, index) => centeredText(line, quoteStartY + index * quoteStep, quoteFit.options))
     .join("\n");
+  const author = signal.quoteAuthor && signal.quoteAuthor !== "Unknown" ? signal.quoteAuthor.toUpperCase() : signal.quoteSource.toUpperCase();
 
-  return `<svg width="800" height="240" viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  return `<svg width="800" height="320" viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
 <title id="title">Daily dot matrix quote</title>
 <desc id="desc">${escapeXml(`${signal.dateLine} ${signal.weekday}. ${signal.quote}`)}</desc>
-<rect width="800" height="240" rx="14" fill="#0D1117"/>
-<rect x="1" y="1" width="798" height="238" rx="13" fill="url(#scan)" opacity="0.3"/>
-<path d="M58 36H36V58M742 36H764V58M58 204H36V182M742 204H764V182" stroke="#6f8294" stroke-width="2" stroke-linecap="square" opacity="0.75"/>
-<path d="M96 133H704" stroke="#244055" stroke-width="1" stroke-dasharray="4 12" opacity="0.55"/>
-${centeredText("PXH DAILY SIGNAL", 34, small)}
-${centeredText(signal.dateLine, 72, dateStyle)}
+<rect width="800" height="320" rx="10" fill="#0D1117"/>
+<rect x="1" y="1" width="798" height="318" rx="9" stroke="#243246"/>
+<rect x="18" y="18" width="764" height="284" rx="4" fill="url(#scan)" opacity="0.34"/>
+<path d="M54 46H34V66M746 46H766V66M54 274H34V254M746 274H766V254" stroke="#6f8294" stroke-width="2" stroke-linecap="square" opacity="0.78"/>
+<path d="M86 148H714" stroke="#244055" stroke-width="1" stroke-dasharray="4 12" opacity="0.58"/>
+${centeredText("PXH DAILY SIGNAL", 38, small)}
+${centeredText(signal.dateLine, 76, dateStyle)}
 ${centeredText(signal.weekday, 126, small)}
 ${quoteSvg}
+<text x="400" y="292" text-anchor="middle" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="13" letter-spacing="1.1">${escapeXml(author)}</text>
 <defs>
   <pattern id="scan" width="8" height="8" patternUnits="userSpaceOnUse">
     <path d="M0 7.5H8" stroke="#183043" stroke-width="1"/>
@@ -673,34 +759,36 @@ function drawIcon(patternName, x, y, cell, rarityColor) {
 }
 
 function renderSignalCacheCard(signal) {
-  const small = { cell: 3.8, radius: 1.25, charGap: 3.8, fill: "#8fa7bf", opacity: 0.84 };
-  const labelStyle = { cell: 4.2, radius: 1.35, charGap: 4.2, fill: signal.rarity.color, opacity: 0.95 };
-  const icon = drawIcon(signal.treasure.icon, 72, 96, 10, signal.rarity.color);
-  const iconX = 72 + (150 - icon.width) / 2;
-  const iconY = 96 + (132 - icon.height) / 2;
-  const centeredIcon = drawIcon(signal.treasure.icon, iconX, iconY, 10, signal.rarity.color);
-  const encodedLines = wrapPlainText(signal.encoded, 34, 2);
+  const small = { cell: 3.25, radius: 1.08, charGap: 3.25, fill: "#8fa7bf", opacity: 0.84 };
+  const labelStyle = { cell: 3.5, radius: 1.16, charGap: 3.5, fill: signal.rarity.color, opacity: 0.95 };
+  const icon = drawIcon(signal.treasure.icon, 68, 102, 8.5, signal.rarity.color);
+  const iconX = 68 + (132 - icon.width) / 2;
+  const iconY = 102 + (118 - icon.height) / 2;
+  const centeredIcon = drawIcon(signal.treasure.icon, iconX, iconY, 8.5, signal.rarity.color);
+  const encodedLines = wrapPlainText(signal.encoded, 42, 3);
   const encodedSvg = encodedLines
-    .map((line, index) => `<text x="292" y="${192 + index * 28}" fill="#edf6ff" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="18" letter-spacing="1.5">${escapeXml(line)}</text>`)
+    .map((line, index) => `<text x="286" y="${210 + index * 24}" fill="#edf6ff" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="18" letter-spacing="1.2">${escapeXml(line)}</text>`)
     .join("\n");
 
-  return `<svg width="800" height="280" viewBox="0 0 800 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  return `<svg width="800" height="330" viewBox="0 0 800 330" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
 <title id="title">Signal Cache terminal easter egg</title>
 <desc id="desc">${escapeXml(`${signal.mode.label} puzzle. ${signal.rarity.label} drop ${signal.treasure.name}.`)}</desc>
-<rect width="800" height="280" rx="8" fill="#0D1117"/>
-<rect x="1" y="1" width="798" height="278" rx="7" stroke="#243246"/>
-<rect width="800" height="280" rx="8" fill="url(#dotgrid)" opacity="0.55"/>
-<path d="M50 38H32V56M750 38H768V56M50 242H32V224M750 242H768V224" stroke="${signal.rarity.color}" stroke-width="1.5" stroke-linecap="square" opacity="0.74"/>
-${drawText("TERMINAL CACHE", 52, 34, small)}
-${rightText(`RUN ${signal.dateKey}`, 748, 34, small)}
-<rect x="58" y="84" width="178" height="156" rx="4" stroke="${signal.rarity.color}" opacity="0.52"/>
+<rect width="800" height="330" rx="8" fill="#0D1117"/>
+<rect x="1" y="1" width="798" height="328" rx="7" stroke="#243246"/>
+<rect x="18" y="18" width="764" height="294" rx="5" fill="url(#dotgrid)" opacity="0.58"/>
+<path d="M52 46H32V66M748 46H768V66M52 284H32V264M748 284H768V264" stroke="${signal.rarity.color}" stroke-width="1.5" stroke-linecap="square" opacity="0.76"/>
+${drawText("TERMINAL CACHE", 58, 42, small)}
+${rightText(`RUN ${signal.dateKey}`, 742, 42, small)}
+<rect x="58" y="90" width="154" height="136" rx="4" stroke="${signal.rarity.color}" opacity="0.56"/>
 ${centeredIcon.svg}
-${drawText("DROP", 292, 82, labelStyle)}
-<text x="292" y="118" fill="${signal.rarity.color}" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="22" font-weight="700">${escapeXml(signal.treasure.name)}</text>
-<text x="292" y="142" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="14" letter-spacing="0.8">${escapeXml(`${signal.rarity.label} / ${signal.cacheId}`)}</text>
-${drawText("PAYLOAD", 292, 162, small)}
+${drawText("DROP", 240, 86, labelStyle)}
+<text x="240" y="122" fill="${signal.rarity.color}" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="22" font-weight="700">${escapeXml(signal.treasure.name)}</text>
+<text x="240" y="148" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="14" letter-spacing="0.7">${escapeXml(`${signal.rarity.label} / ${signal.cacheId}`)}</text>
+${drawText("CIPHER", 286, 164, small)}
+<rect x="278" y="190" width="384" height="56" rx="4" fill="#101820" stroke="#243246"/>
 ${encodedSvg}
-<text x="292" y="232" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="14" letter-spacing="0.8">${escapeXml(`${signal.mode.label} / ${signal.hint}`)}</text>
+<text x="286" y="270" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="14" letter-spacing="0.7">${escapeXml(`${signal.mode.label} / ${signal.hint}`)}</text>
+<text x="286" y="292" fill="#8fa7bf" font-family="Cascadia Code, SFMono-Regular, Consolas, monospace" font-size="13" letter-spacing="0.6">DETAILS BELOW REVEAL THE ANSWER</text>
 <defs>
   <pattern id="dotgrid" width="24" height="24" patternUnits="userSpaceOnUse">
     <circle cx="4" cy="4" r="0.85" fill="#58A6FF" opacity="0.22"/>
@@ -723,18 +811,20 @@ ${README_START}
     <img width="800" src="./assets/signal-cache.svg" alt="Signal Cache terminal easter egg" title="Signal Cache terminal easter egg"/>
 </p>
 
-<details>
-<summary>Signal Cache decode key</summary>
+<details align="center">
+<summary>Reveal Signal Cache</summary>
 
 \`\`\`text
 RUN: ${signal.dateKey}
-QUOTE_SOURCE: ${signal.quoteSource}
-QUOTE_AUTHOR: ${signal.quoteAuthor}
 MODE: ${signal.mode.label}
 HINT: ${signal.hint}
+PAYLOAD: ${signal.encoded}
 ANSWER: ${signal.answer}
 DROP: ${signal.treasure.name} / ${signal.rarity.label}
 ICON: ${signal.treasure.icon}
+QUOTE: ${signal.quote}
+QUOTE_AUTHOR: ${signal.quoteAuthor}
+QUOTE_SOURCE: ${signal.quoteSource}
 UPDATED: ${signal.dateLine} ${signal.weekday} Asia/Shanghai
 \`\`\`
 
