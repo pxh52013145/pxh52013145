@@ -14,30 +14,11 @@
 </p>
 <!-- DOT_MATRIX:END -->
 
-<!-- SIGNAL_CACHE:START -->
+<!-- PIXEL_DROP:START -->
 <p align="center">
-    <img width="800" src="./assets/signal-cache.svg" alt="Signal Cache terminal easter egg" title="Signal Cache terminal easter egg"/>
+    <img width="800" src="./assets/signal-cache.svg" alt="Daily pixel drop" title="Daily pixel drop"/>
 </p>
-
-<details align="center">
-<summary>Reveal Signal Cache</summary>
-
-```text
-RUN: 20260517
-MODE: ATBASH
-HINT: MIRROR MAP
-PAYLOAD: ORTSG
-ANSWER: LIGHT
-DROP: Pixel Heart / COMMON
-ICON: HEART
-QUOTE: THE PERSON WHO NEVER MADE A MISTAKE NEVER TRIED ANYTHING NEW.
-QUOTE_AUTHOR: Albert Einstein
-QUOTE_SOURCE: ZenQuotes
-UPDATED: 2026 / 05 / 17 SUNDAY Asia/Shanghai
-```
-
-</details>
-<!-- SIGNAL_CACHE:END -->
+<!-- PIXEL_DROP:END -->
 
 <p align="center">
     <img width="800" src="https://github-readme-activity-graph.vercel.app/graph?username=pxh52013145&theme=github-compact&hide_border=true&area=true&custom_title=Activity%20Graph" alt="Activity Graph" title="Activity Graph" />
